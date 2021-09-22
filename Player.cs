@@ -7,6 +7,7 @@ namespace BattleArenaExpansion
 {
     class Player : Entity
     {
+        private Shop _shop;
         private Item[] _items;
         private Item _currentItem;
         private int _currentItemIndex;
@@ -19,14 +20,6 @@ namespace BattleArenaExpansion
             get
             {
                 return _inventory;
-            }
-        }
-
-        public int Money
-        {
-            get
-            {
-                return _money;
             }
         }
 

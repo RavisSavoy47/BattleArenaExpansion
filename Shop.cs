@@ -47,7 +47,7 @@ namespace BattleArenaExpansion
 
         public bool Load(StreamReader reader)
         {
-            if (!int.TryParse(reader.ReadLine(), out _gold))
+            if (!int.TryParse(reader.ReadLine(), out _money))
                 return false;
 
             return true;
