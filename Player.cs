@@ -11,7 +11,7 @@ namespace BattleArenaExpansion
         private Item _currentItem;
         private int _currentItemIndex;
         private string _job;
-        private int _gold;
+        private int _money;
         private Item[] _inventory;
 
         public Item[] Inventory
@@ -22,11 +22,11 @@ namespace BattleArenaExpansion
             }
         }
 
-        public int Gold
+        public int Money
         {
             get
             {
-                return _gold;
+                return _money;
             }
         }
 
@@ -50,6 +50,17 @@ namespace BattleArenaExpansion
                 return base.AttackPower;
             }
         }
+
+        public override float Money
+        {
+            get
+            {
+                if (_currentItem.Type == ItemType.NONE)
+                    return base.Money + CurrentItem.Cost;
+
+                return base.Money;
+            }
+        }  
 
         public Item CurrentItem
         {
@@ -82,7 +93,7 @@ namespace BattleArenaExpansion
             _currentItemIndex = -1;
         }
 
-        public Player(string name, float health, float attackPower, float defensePower, Item[] items, string job) : base(name, health, attackPower, defensePower)
+        public Player(string name, float health, float attackPower, float defensePower, float money, Item[] items, string job) : base(name, health, attackPower, defensePower, money)
         {
             _items = items;
             _currentItem.Name = "Nothing";
@@ -149,6 +160,7 @@ namespace BattleArenaExpansion
             writer.WriteLine(_job);
             base.Save(writer);
             writer.WriteLine(_currentItemIndex);
+            writer.WriteLine(_money);
         }
 
         public override bool Load(StreamReader reader)
@@ -169,6 +181,11 @@ namespace BattleArenaExpansion
                 return true;
             }
 
+        }
+
+        public void CollectMoney(Entity )
+        {
+            _player.Money += _currentEnemy.Money;
         }
     }
 }

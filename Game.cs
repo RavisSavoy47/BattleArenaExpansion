@@ -25,12 +25,13 @@ namespace BattleArenaExpansion
     {
         public string Name;
         public float StatBoost;
-        public int Cost;
         public ItemType Type;
+        public int Cost;
     }
 
     class Game
     {
+        private Shop _shop;
         private bool _gameOver;
         private Scene _currentScene;
         private Player _player;
@@ -40,6 +41,7 @@ namespace BattleArenaExpansion
         private string _playerName;
         private Item[] _wizardItems;
         private Item[] _knightItems;
+        private Item[] _shopItems;
         /// <summary>
         /// Function that starts the main game loop
         /// </summary>
@@ -58,13 +60,17 @@ namespace BattleArenaExpansion
 
         public void InitializeItems()
         {
+            //Shop Items
+            
+
+
             //Wizard Items
-            Item bigWand = new Item { Name = "Big Wand", StatBoost = 30, Cost = 10, Type = ItemType.ATTACK };
-            Item bigSheild = new Item { Name = "Big Sheild", StatBoost = 35, Cost = 15, Type = ItemType.DEFENSE };
+            Item bigWand = new Item { Name = "Big Wand", StatBoost = 30, Type = ItemType.ATTACK, Cost = 0};
+            Item bigSheild = new Item { Name = "Big Sheild", StatBoost = 35, Type = ItemType.DEFENSE, Cost = 0};
 
             //Knight Items
-            Item stick = new Item { Name = "Kitchen Gun", StatBoost = 50, Cost = 25, Type = ItemType.ATTACK };
-            Item shoes = new Item { Name = "The Drip", StatBoost = 1000, Cost = 150, Type = ItemType.DEFENSE };
+            Item stick = new Item { Name = "Kitchen Gun", StatBoost = 50, Type = ItemType.ATTACK, Cost = 0};
+            Item shoes = new Item { Name = "The Drip", StatBoost = 1000, Type = ItemType.DEFENSE, Cost = 0};
 
             //Initialize arrays
             _wizardItems = new Item[] { bigWand, bigSheild };
@@ -73,13 +79,13 @@ namespace BattleArenaExpansion
 
         public void InitializeEnimes()
         {
-            Entity SmallFrog = new Entity("Nice Frog", 35, 10, 5);
+            Entity SmallFrog = new Entity("Nice Frog", 35, 10, 5, 5);
 
-            Entity StackedFrog = new Entity("Delux Frog", 55, 35, 13);
+            Entity StackedFrog = new Entity("Delux Frog", 55, 35, 13, 10);
 
-            Entity MegaFrog = new Entity("Captain Frog", 100, 70, 13);
+            Entity MegaFrog = new Entity("Captain Frog", 100, 70, 13, 35);
 
-            Entity KingFrog = new Entity("The Guardians of Frogs", 150, 55, 5);
+            Entity KingFrog = new Entity("The Guardians of Frogs", 150, 55, 25, 100);
 
             //enemies array
             _enemies = new Entity[] { SmallFrog, StackedFrog, MegaFrog, KingFrog };
@@ -342,13 +348,13 @@ namespace BattleArenaExpansion
 
             if (choice == 0)
             {
-                _player = new Player(_playerName, 200, 45, 35, _wizardItems, "Wizard");
+                _player = new Player(_playerName, 200, 45, 35, 0, _wizardItems, "Wizard");
                 _currentScene++;
             }
 
             else if (choice == 1)
             {
-                _player = new Player(_playerName, 100, 75, 40, _knightItems, "Knight");
+                _player = new Player(_playerName, 100, 75, 40, 0, _knightItems, "Knight");
                 _currentScene++;
             }
         }
@@ -363,6 +369,7 @@ namespace BattleArenaExpansion
             Console.WriteLine("Health: " + character.Health);
             Console.WriteLine("Attack: " + character.AttackPower);
             Console.WriteLine("Defense: " + character.DefensePower);
+            Console.WriteLine("Cash: " + character.Money);
             Console.WriteLine();
         }
 
@@ -453,6 +460,7 @@ namespace BattleArenaExpansion
             else if (_currentEnemy.Health <= 0)
             {
                 Console.WriteLine("You Defeated " + _currentEnemy.Name);
+                _player.money += _currentEnemy.Money;
                 Console.ReadKey();
                 _currentEnemyIndex++;
 
@@ -466,5 +474,7 @@ namespace BattleArenaExpansion
             }
 
         }
+
+        
     }
 }

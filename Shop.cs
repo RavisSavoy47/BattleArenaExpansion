@@ -7,12 +7,12 @@ namespace BattleArenaExpansion
 {
     class Shop
     {
-        private int _gold;
+        private int _money;
         private Item[] _inventory;
 
         public Shop(Item[] items)
         {
-            _gold = 1000;
+            _money = 0;
 
             _inventory = items;
         }
@@ -21,7 +21,7 @@ namespace BattleArenaExpansion
         {
             Item itemYouWant = _inventory[itemIndex];
 
-            if (player.Gold >= itemYouWant.Cost)
+            if (player.Money >= itemYouWant.Cost)
             {
                 return true;
             }
