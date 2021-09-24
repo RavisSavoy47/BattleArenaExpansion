@@ -42,6 +42,12 @@ namespace BattleArenaExpansion
         private Item[] _wizardItems;
         private Item[] _knightItems;
         private Item[] _shopItems;
+
+        //shop Items
+        private Item _mightySword;
+        private Item _gloves;
+        private Item _chestplate;
+        private Item _orbOfDarkness;
         /// <summary>
         /// Function that starts the main game loop
         /// </summary>
@@ -61,7 +67,10 @@ namespace BattleArenaExpansion
         public void InitializeItems()
         {
             //Shop Items
-            
+            _mightySword = new Item { Name = "Enchanted Sword", StatBoost = 40, Type = ItemType.ATTACK, Cost = 10 };
+            _gloves = new Item { Name = "Fast Gloves", StatBoost = 40, Type = ItemType.DEFENSE, Cost = 10 };
+            _chestplate = new Item { Name = "Ripped Drip", StatBoost = 1000, Type = ItemType.DEFENSE, Cost = 200 };
+            _orbOfDarkness = new Item { Name = "Fast Gloves", StatBoost = 666, Type = ItemType.ATTACK, Cost = 100 };
 
 
             //Wizard Items
@@ -73,6 +82,7 @@ namespace BattleArenaExpansion
             Item shoes = new Item { Name = "The Drip", StatBoost = 1000, Type = ItemType.DEFENSE, Cost = 0};
 
             //Initialize arrays
+            _shopItems = new Item[] { _mightySword, _gloves, _chestplate, _orbOfDarkness };
             _wizardItems = new Item[] { bigWand, bigSheild };
             _knightItems = new Item[] { stick, shoes };
         }
@@ -102,6 +112,9 @@ namespace BattleArenaExpansion
             _currentScene = 0;
             InitializeEnimes();
             InitializeItems();
+
+            _shop = new Shop(_shopItems);
+            _player = new Player();
         }
 
         /// <summary>
@@ -262,6 +275,7 @@ namespace BattleArenaExpansion
                 case Scene.BATTLE:
                     Battle();
                     CheckBattleResults();
+                    Shop();
                     break;
                 case Scene.RESTARTMENU:
                     DisplayRestartMenu();
@@ -369,7 +383,7 @@ namespace BattleArenaExpansion
             Console.WriteLine("Health: " + character.Health);
             Console.WriteLine("Attack: " + character.AttackPower);
             Console.WriteLine("Defense: " + character.DefensePower);
-            Console.WriteLine("Cash: " + character.Money);
+            Console.WriteLine("Cash: " + character.MoneyAmount);
             Console.WriteLine();
         }
 
@@ -447,6 +461,8 @@ namespace BattleArenaExpansion
         /// </summary>
         void CheckBattleResults()
         {
+            float enemyMoney = 0;
+
             Console.Clear();
             //If the player dies they are asked if they want to keep playing or not
             if (_player.Health <= 0)
@@ -459,8 +475,9 @@ namespace BattleArenaExpansion
             //check if the enemy dies
             else if (_currentEnemy.Health <= 0)
             {
-                Console.WriteLine("You Defeated " + _currentEnemy.Name);
-                _player.CollectMoney(_currentEnemy);
+
+                enemyMoney = _currentEnemy.Money(_player);
+                Console.WriteLine("You Defeated " + _currentEnemy.Name + "You Collected " + enemyMoney + " Money!");
                 Console.ReadKey();
                 _currentEnemyIndex++;
 
@@ -494,7 +511,7 @@ namespace BattleArenaExpansion
         void Shop()
         {
             //shows the player gold and inventory
-            Console.WriteLine("Your gold: " + _player.Money);
+            Console.WriteLine("Your gold: " + _player.MoneyAmount);
             Console.WriteLine("Your inventory: ");
 
             for (int i = 0; i < _player.GetItemNames().Length; i++)
@@ -510,7 +527,7 @@ namespace BattleArenaExpansion
                     {
                         if (_shop.Sell(_player, 0))
                         {
-                            _player.Buy();
+                            _player.Buy(_mightySword);
                         }
                         break;
                     }
@@ -518,7 +535,7 @@ namespace BattleArenaExpansion
                     {
                         if (_shop.Sell(_player, 1))
                         {
-                            _player.Buy();
+                            _player.Buy(_gloves);
                         }
                         break;
                     }
@@ -526,7 +543,7 @@ namespace BattleArenaExpansion
                     {
                         if (_shop.Sell(_player, 2))
                         {
-                            _player.Buy();
+                            _player.Buy(_orbOfDarkness);
                         }
                         break;
                     }
@@ -534,7 +551,7 @@ namespace BattleArenaExpansion
                     {
                         if (_shop.Sell(_player, 3))
                         {
-                            _player.Buy();
+                            _player.Buy(_chestplate);
                         }
                         break;
                     }
@@ -542,7 +559,7 @@ namespace BattleArenaExpansion
                     Save();
                     break;
                 case 5:
-                    _gameOver = true;
+                    return;
                     break;
                 default:
                     {

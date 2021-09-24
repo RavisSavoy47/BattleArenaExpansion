@@ -21,7 +21,7 @@ namespace BattleArenaExpansion
         {
             Item itemYouWant = _inventory[itemIndex];
 
-            if (player.Money >= itemYouWant.Cost)
+            if (player.MoneyAmount >= itemYouWant.Cost)
             {
                 return true;
             }
@@ -33,6 +33,7 @@ namespace BattleArenaExpansion
             }
             return false;
         }
+
         public string[] GetItemNames()
         {
             string[] itemNames = new string[_inventory.Length];

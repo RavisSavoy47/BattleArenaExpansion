@@ -11,7 +11,7 @@ namespace BattleArenaExpansion
         private float _health;
         private float _attackPower;
         private float _defensePower;
-        private int _money;
+        private float _moneyAmount;
 
         public string Name
         {
@@ -33,22 +33,28 @@ namespace BattleArenaExpansion
             get { return _defensePower; }
         }
 
+        public float MoneyAmount
+        {
+            get { return _moneyAmount; }
+        }
+
+
         public Entity()
         {
             _name = "Default";
             _health = 0;
             _attackPower = 0;
             _defensePower = 0;
-            _money = 0;
+            _moneyAmount = 0;
         }
 
-        public Entity(string name, float health, float attackPower, float defensePower, int money)
+        public Entity(string name, float health, float attackPower, float defensePower, float moneyAmount)
         {
             _name = name;
             _health = health;
             _attackPower = attackPower;
             _defensePower = defensePower;
-            _money = money;
+            _moneyAmount = moneyAmount;
         }
 
 
@@ -71,13 +77,33 @@ namespace BattleArenaExpansion
             return defender.TakeDamage(AttackPower);
         }
 
+        public float TakeMoney(float enemyMoney)
+        {
+            float moneyTaken = enemyMoney - MoneyAmount;
+
+            if (moneyTaken < 0)
+            {
+                moneyTaken = 0;
+                Console.WriteLine("");
+            }
+
+            _moneyAmount += moneyTaken;
+
+            return moneyTaken;
+        }
+
+        public float Money(Entity attacker)
+        {
+            return attacker.TakeMoney(_moneyAmount);
+        }
+
         public virtual void Save(StreamWriter writer)
         {
             writer.WriteLine(_name);
             writer.WriteLine(_health);
             writer.WriteLine(_attackPower);
             writer.WriteLine(_defensePower);
-            writer.WriteLine(_money);
+            writer.WriteLine(_moneyAmount);
         }
 
         public virtual bool Load(StreamReader reader)
@@ -93,7 +119,7 @@ namespace BattleArenaExpansion
             if (!float.TryParse(reader.ReadLine(), out _defensePower))
                 return false;
 
-            if (!int.TryParse(reader.ReadLine(), out _money))
+            if (!float.TryParse(reader.ReadLine(), out _moneyAmount))
                 return false;
             return true;
         }

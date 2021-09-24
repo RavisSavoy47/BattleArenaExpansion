@@ -61,6 +61,7 @@ namespace BattleArenaExpansion
 
         public Player()
         {
+            _inventory = new Item[4];
             _items = new Item[0];
             _currentItem.Name = "Nothing";
             _currentItemIndex = -1;
@@ -137,8 +138,8 @@ namespace BattleArenaExpansion
 
         public void Buy(Item item)
         {
-            int moneyAmount = Money;
-            moneyAmount -= item.Cost;
+            float yourMoney = MoneyAmount;
+            yourMoney -= item.Cost;
 
             Item[] GetItem = new Item[_inventory.Length + 1];
 
@@ -153,13 +154,7 @@ namespace BattleArenaExpansion
             _inventory = GetItem;
 
         }
-
-
-        public void CollectMoney(Entity _enemies)
-        {
-            int moneyAmount = Money;
-            moneyAmount += _enemies.Money;
-        }
+  
 
         public override void Save(StreamWriter writer)
         {
