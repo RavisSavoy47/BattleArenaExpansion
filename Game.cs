@@ -460,7 +460,7 @@ namespace BattleArenaExpansion
             else if (_currentEnemy.Health <= 0)
             {
                 Console.WriteLine("You Defeated " + _currentEnemy.Name);
-                _player.money += _currentEnemy.Money;
+                _player.CollectMoney(_currentEnemy);
                 Console.ReadKey();
                 _currentEnemyIndex++;
 
@@ -475,6 +475,81 @@ namespace BattleArenaExpansion
 
         }
 
-        
+        private string[] GetShopMenuOptions()
+        {
+            string[] itemName = new string[_shopItems.Length + 2];
+
+            //Copy the values from the old array into the new array
+            for (int i = 0; i < _shopItems.Length; i++)
+            {
+                itemName[i] = _shopItems[i].Name;
+            }
+
+            itemName[_shopItems.Length] = "Save";
+            itemName[_shopItems.Length + 1] = "Exit";
+
+            return itemName;
+        }
+
+        void Shop()
+        {
+            //shows the player gold and inventory
+            Console.WriteLine("Your gold: " + _player.Money);
+            Console.WriteLine("Your inventory: ");
+
+            for (int i = 0; i < _player.GetItemNames().Length; i++)
+            {
+                Console.WriteLine(_player.GetItemNames()[i]);
+            }
+
+            int choice = GetInput("\nWelcome! Please selct an item.", GetShopMenuOptions());
+
+            switch (choice)
+            {
+                case 0:
+                    {
+                        if (_shop.Sell(_player, 0))
+                        {
+                            _player.Buy();
+                        }
+                        break;
+                    }
+                case 1:
+                    {
+                        if (_shop.Sell(_player, 1))
+                        {
+                            _player.Buy();
+                        }
+                        break;
+                    }
+                case 2:
+                    {
+                        if (_shop.Sell(_player, 2))
+                        {
+                            _player.Buy();
+                        }
+                        break;
+                    }
+                case 3:
+                    {
+                        if (_shop.Sell(_player, 3))
+                        {
+                            _player.Buy();
+                        }
+                        break;
+                    }
+                case 4:
+                    Save();
+                    break;
+                case 5:
+                    _gameOver = true;
+                    break;
+                default:
+                    {
+                        return;
+                    }
+            }
+        }
+
     }
 }

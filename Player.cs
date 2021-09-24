@@ -7,12 +7,10 @@ namespace BattleArenaExpansion
 {
     class Player : Entity
     {
-        private Shop _shop;
         private Item[] _items;
         private Item _currentItem;
         private int _currentItemIndex;
         private string _job;
-        private int _money;
         private Item[] _inventory;
 
         public Item[] Inventory
@@ -43,17 +41,6 @@ namespace BattleArenaExpansion
                 return base.AttackPower;
             }
         }
-
-        public override float Money
-        {
-            get
-            {
-                if (_currentItem.Type == ItemType.NONE)
-                    return base.Money + CurrentItem.Cost;
-
-                return base.Money;
-            }
-        }  
 
         public Item CurrentItem
         {
@@ -86,7 +73,7 @@ namespace BattleArenaExpansion
             _currentItemIndex = -1;
         }
 
-        public Player(string name, float health, float attackPower, float defensePower, float money, Item[] items, string job) : base(name, health, attackPower, defensePower, money)
+        public Player(string name, float health, float attackPower, float defensePower, int money, Item[] items, string job) : base(name, health, attackPower, defensePower, money)
         {
             _items = items;
             _currentItem.Name = "Nothing";
@@ -148,12 +135,37 @@ namespace BattleArenaExpansion
             return itemNames;
         }
 
+        public void Buy(Item item)
+        {
+            int moneyAmount = Money;
+            moneyAmount -= item.Cost;
+
+            Item[] GetItem = new Item[_inventory.Length + 1];
+
+
+            for (int i = 0; i < _inventory.Length; i++)
+            {
+                GetItem[i] = _inventory[i];
+            }
+
+            GetItem[GetItem.Length - 1] = item;
+
+            _inventory = GetItem;
+
+        }
+
+
+        public void CollectMoney(Entity _enemies)
+        {
+            int moneyAmount = Money;
+            moneyAmount += _enemies.Money;
+        }
+
         public override void Save(StreamWriter writer)
         {
             writer.WriteLine(_job);
             base.Save(writer);
             writer.WriteLine(_currentItemIndex);
-            writer.WriteLine(_money);
         }
 
         public override bool Load(StreamReader reader)
@@ -176,9 +188,6 @@ namespace BattleArenaExpansion
 
         }
 
-        public void CollectMoney(Entity )
-        {
-            _player.Money += _currentEnemy.Money;
-        }
+
     }
 }
