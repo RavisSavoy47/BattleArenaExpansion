@@ -68,19 +68,19 @@ namespace BattleArenaExpansion
         public void InitializeItems()
         {
             //Shop Items
-            _mightySword = new Item { Name = "Enchanted Sword", StatBoost = 40, Type = ItemType.ATTACK, Cost = 10 };
-            _gloves = new Item { Name = "Fast Gloves", StatBoost = 40, Type = ItemType.DEFENSE, Cost = 10 };
-            _chestplate = new Item { Name = "Ripped Drip", StatBoost = 1000, Type = ItemType.DEFENSE, Cost = 200 };
-            _orbOfDarkness = new Item { Name = "Powerful Orb", StatBoost = 666, Type = ItemType.ATTACK, Cost = 100 };
+            _mightySword = new Item { Name = "Enchanted Sword", StatBoost = 60, Type = ItemType.ATTACK, Cost = 30 };
+            _gloves = new Item { Name = "Fast Gloves", StatBoost = 65, Type = ItemType.DEFENSE, Cost = 30 };
+            _chestplate = new Item { Name = "Golden Armor", StatBoost = 200, Type = ItemType.DEFENSE, Cost = 100 };
+            _orbOfDarkness = new Item { Name = "Powerful Orb", StatBoost = 200, Type = ItemType.ATTACK, Cost = 100 };
 
 
             //Wizard Items
-            Item bigWand = new Item { Name = "Big Wand", StatBoost = 30, Type = ItemType.ATTACK, Cost = 0};
-            Item bigSheild = new Item { Name = "Big Sheild", StatBoost = 35, Type = ItemType.DEFENSE, Cost = 0};
+            Item bigWand = new Item { Name = "Clover Staff", StatBoost = 50, Type = ItemType.ATTACK, Cost = 0};
+            Item bigSheild = new Item { Name = "Enchanted Robes", StatBoost = 50, Type = ItemType.DEFENSE, Cost = 0};
 
             //Knight Items
             Item stick = new Item { Name = "Kitchen Gun", StatBoost = 50, Type = ItemType.ATTACK, Cost = 0};
-            Item shoes = new Item { Name = "The Drip", StatBoost = 1000, Type = ItemType.DEFENSE, Cost = 0};
+            Item shoes = new Item { Name = "Cowboy Beard", StatBoost = 50, Type = ItemType.DEFENSE, Cost = 0};
 
             //Initialize arrays
             _shopItems = new Item[] { _mightySword, _gloves, _chestplate, _orbOfDarkness };
@@ -89,14 +89,14 @@ namespace BattleArenaExpansion
         }
 
         public void InitializeEnimes()
-        {
-            Entity SmallFrog = new Entity("Nice Frog", 35, 10, 5, 5000);
+        { 
+            Entity SmallFrog = new Entity("Nice Frog", 35, 10, 5, 5);
 
-            Entity StackedFrog = new Entity("Delux Frog", 55, 35, 13, 10);
+            Entity StackedFrog = new Entity("Delux Frog", 40, 15, 10, 10);
 
             Entity MegaFrog = new Entity("Captain Frog", 100, 70, 13, 35);
 
-            Entity KingFrog = new Entity("The Guardians of Frogs", 150, 55, 25, 100);
+            Entity KingFrog = new Entity("The True Frog", 200, 55, 30, 100);
 
             //enemies array
             _enemies = new Entity[] { SmallFrog, StackedFrog, MegaFrog, KingFrog };
@@ -138,12 +138,8 @@ namespace BattleArenaExpansion
 
         public void Save()
         {
-            bool loadSuccessfull = true;
-
             //Create a new stream writer
             StreamWriter writer = new StreamWriter("SaveData.txt");
-            //...return false
-            loadSuccessfull = false;
             //Save current enemy index
             writer.WriteLine(_currentEnemyIndex);
             //Save player and enemy stats
@@ -590,7 +586,8 @@ namespace BattleArenaExpansion
                     Save();
                     break;
                 case 5:
-                    return;
+                    _currentScene = Scene.BATTLE;
+                    break;
 
                 default:
                     {
