@@ -18,6 +18,7 @@ namespace BattleArenaExpansion
         NAMECREATION,
         CHARACTERSELECTION,
         BATTLE,
+        STARTSHOP,
         RESTARTMENU
     }
 
@@ -145,7 +146,6 @@ namespace BattleArenaExpansion
             loadSuccessfull = false;
             //Save current enemy index
             writer.WriteLine(_currentEnemyIndex);
-
             //Save player and enemy stats
             _player.Save(writer);
             _currentEnemy.Save(writer);
@@ -275,12 +275,14 @@ namespace BattleArenaExpansion
                 case Scene.BATTLE:
                     Battle();
                     CheckBattleResults();
-                    EnterShop();
+                    break;
+                case Scene.STARTSHOP:
+                    TheShop();
                     break;
                 case Scene.RESTARTMENU:
                     DisplayRestartMenu();
                     break;
-
+                default:
                     Console.WriteLine("Invaild scene index");
                     break;
             }
@@ -306,6 +308,9 @@ namespace BattleArenaExpansion
             }
         }
 
+        /// <summary>
+        /// Lest the player start the game or load up a savefile
+        /// </summary>
         public void DisplayStartMenu()
         {
             int choice = GetInput("Welcome to Battle Arena!", "Start New Game", "Load Game");
@@ -408,19 +413,25 @@ namespace BattleArenaExpansion
 
             //Print PLayer stats
             DisplayStats(_player);
+
             //Print Enemy stats
             DisplayStats(_currentEnemy);
 
-            int choice = GetInput("A " + _currentEnemy.Name + " approaches you!", "Attack", "Equip Item", "Remove Current Item", "Save");
+            int choice = GetInput("A " + _currentEnemy.Name + " approaches you!", "Attack", "Equip Item", "Remove Current Item", "Enter Shop", "Save");
 
             if (choice == 0)
             {
                 //player attaks enemy 
                 damageDealth = _player.Attack(_currentEnemy);
                 Console.WriteLine("You dealt " + damageDealth + " damage!");
+
+                //enemy attcaks the player
+                damageDealth = _currentEnemy.Attack(_player);
+                Console.WriteLine("The " + _currentEnemy.Name + " dealt " + damageDealth + " damage!");
             }
             else if (choice == 1)
             {
+                //lets the player equip their items 
                 DisplayEquipItemMenu();
                 Console.ReadKey(true);
                 Console.Clear();
@@ -428,6 +439,7 @@ namespace BattleArenaExpansion
             }
             else if (choice == 2)
             {
+                //lets the player unequip an item they had equiped
                 if (!_player.TryRemoveCurrentItem())
                     Console.WriteLine("You have no items equipped.");
 
@@ -440,15 +452,17 @@ namespace BattleArenaExpansion
             }
             else if (choice == 3)
             {
+                EnterShop();
+            }
+            else if (choice == 4)
+            {
+                //lets the player save the gave when ever they want
                 Save();
                 Console.WriteLine("Saved Game");
                 Console.ReadKey(true);
                 Console.Clear();
                 return;
             }
-
-            damageDealth = _currentEnemy.Attack(_player);
-            Console.WriteLine("The " + _currentEnemy.Name + " dealt " + damageDealth + " damage!");
 
             Console.ReadKey(true);
             Console.Clear();
@@ -499,7 +513,7 @@ namespace BattleArenaExpansion
 
             if (choice == 0)
             {
-                TheShop();
+                _currentScene = Scene.STARTSHOP;
             }
             else if (choice == 1)
             {
@@ -529,11 +543,13 @@ namespace BattleArenaExpansion
             Console.WriteLine("Your gold: " + _player.Money);
             Console.WriteLine("Your inventory: ");
 
+            //keeps track of the players inventory after they buy an item
             for (int i = 0; i < _player.GetItemNames().Length; i++)
             {
                 Console.WriteLine(_player.GetItemNames()[i]);
             }
 
+            //lets the player choose wha item they want to buy
             int choice = GetInput("\nWelcome! Please selct an item.", GetShopMenuOptions());
 
             switch (choice)

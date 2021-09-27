@@ -64,8 +64,8 @@ namespace BattleArenaExpansion
 
         public Player()
         {
-            _inventory = new Item[0];
-            _items = new Item[0];
+            _inventory = new Item[10];
+            _items = new Item[10];
             _currentItem.Name = "Nothing";
             _currentItemIndex = -1;
         }
@@ -79,7 +79,7 @@ namespace BattleArenaExpansion
 
         public Player(string name, float health, float attackPower, float defensePower, int money, Item[] items, string job) : base(name, health, attackPower, defensePower, money)
         {
-
+            _money = money;
             _items = items;
             _currentItem.Name = "Nothing";
             _job = job;
@@ -139,38 +139,63 @@ namespace BattleArenaExpansion
 
             return itemNames;
         }
-
+        /// <summary>
+        /// When the player it adds it to their item list and substacts their money
+        /// </summary>
+        /// <param name="item"></param>
         public void Buy(Item item)
         {
+            //takes the money needed to buy th eitem
             _money -= item.Cost;
 
+            //makes an array equal to the items length
             Item[] GetItem = new Item[_items.Length + 1];
 
-
+            //copies the item from its array to the items array
             for (int i = 0; i < _items.Length; i++)
             {
                 GetItem[i] = _items[i];
             }
 
+            //the item is added to the inventory 
             GetItem[GetItem.Length - 1] = item;
 
+            //makes the item apart of its item list
             _items = GetItem;
 
         }
 
+        /// <summary>
+        /// Adds the enemy money to te players money
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public float GetMoney(Entity entity)
         {
+            //gets the enemy money and adds it to the players money
             _money += entity.MoneyAmount;
 
+            //returns the money to the player
             return _money;
 
         }
 
+        /// <summary>
+        /// writes down all things that need to be saved
+        /// </summary>
+        /// <param name="writer"></param>
         public override void Save(StreamWriter writer)
         {
             writer.WriteLine(_job);
             base.Save(writer);
             writer.WriteLine(_currentItemIndex);
+            writer.WriteLine(Money);
+            writer.WriteLine(_items.Length);
+
+            for (int i = 0; i < _items.Length; i++)
+            {
+                writer.WriteLine(_items[i].Name);
+            }
         }
 
         public override bool Load(StreamReader reader)
@@ -184,6 +209,22 @@ namespace BattleArenaExpansion
             if (!int.TryParse(reader.ReadLine(), out _currentItemIndex))
                 //...return false
                 return false;
+
+            if (!float.TryParse(reader.ReadLine(), out _money))         
+                return false;
+            
+            //If the current line can't be converted into an int..
+            if (!int.TryParse(reader.ReadLine(), out int _itemsLength))
+                //...return false
+                return false;
+
+            _items = new Item[_itemsLength];
+
+            for (int i = 0; i < _items.Length; i++)
+            {
+                _items[i].Name = reader.ReadLine();
+            }
+            return true;
 
             //Return whether or not the item was equipped successfully
             TryEquipItem(_currentItemIndex);

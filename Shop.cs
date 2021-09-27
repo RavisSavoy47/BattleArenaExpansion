@@ -14,16 +14,26 @@ namespace BattleArenaExpansion
             _inventory = items;
         }
 
+        /// <summary>
+        /// Checks if th eplaye rhas enough money to buy the item
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="itemIndex"></param>
+        /// <returns></returns>
         public bool Sell(Player player, int itemIndex)
         {
+            //checks the index of the selected item
             Item itemYouWant = _inventory[itemIndex];
 
+            //checks if the player has enough money to buy item
             if (player.Money >= itemYouWant.Cost)
             {
+                //if yes then they buy teh item
                 return true;
             }
             else
             {
+                //if the player does not have enough money 
                 Console.Clear();
                 Console.WriteLine("You can't afford this item.");
                 Console.ReadKey(true);
@@ -31,6 +41,10 @@ namespace BattleArenaExpansion
             return false;
         }
 
+        /// <summary>
+        /// gives the player the names of the items
+        /// </summary>
+        /// <returns></returns>
         public string[] GetItemNames()
         {
             string[] itemNames = new string[_inventory.Length];
