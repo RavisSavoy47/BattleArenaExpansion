@@ -70,7 +70,7 @@ namespace BattleArenaExpansion
             _mightySword = new Item { Name = "Enchanted Sword", StatBoost = 40, Type = ItemType.ATTACK, Cost = 10 };
             _gloves = new Item { Name = "Fast Gloves", StatBoost = 40, Type = ItemType.DEFENSE, Cost = 10 };
             _chestplate = new Item { Name = "Ripped Drip", StatBoost = 1000, Type = ItemType.DEFENSE, Cost = 200 };
-            _orbOfDarkness = new Item { Name = "Fast Gloves", StatBoost = 666, Type = ItemType.ATTACK, Cost = 100 };
+            _orbOfDarkness = new Item { Name = "Powerful Orb", StatBoost = 666, Type = ItemType.ATTACK, Cost = 100 };
 
 
             //Wizard Items
@@ -275,7 +275,7 @@ namespace BattleArenaExpansion
                 case Scene.BATTLE:
                     Battle();
                     CheckBattleResults();
-                    Shop();
+                    EnterShop();
                     break;
                 case Scene.RESTARTMENU:
                     DisplayRestartMenu();
@@ -383,7 +383,6 @@ namespace BattleArenaExpansion
             Console.WriteLine("Health: " + character.Health);
             Console.WriteLine("Attack: " + character.AttackPower);
             Console.WriteLine("Defense: " + character.DefensePower);
-            Console.WriteLine("Cash: " + character.MoneyAmount);
             Console.WriteLine();
         }
 
@@ -475,10 +474,12 @@ namespace BattleArenaExpansion
             //check if the enemy dies
             else if (_currentEnemy.Health <= 0)
             {
-
-                enemyMoney = _currentEnemy.Money(_player);
+                //Sets the 
+                enemyMoney = _player.GetMoney(_currentEnemy);
                 Console.WriteLine("You Defeated " + _currentEnemy.Name + "You Collected " + enemyMoney + " Money!");
+                
                 Console.ReadKey();
+                Console.Clear();
                 _currentEnemyIndex++;
 
                 //If all enemies have died continue to next scene
@@ -490,6 +491,20 @@ namespace BattleArenaExpansion
                 _currentEnemy = _enemies[_currentEnemyIndex];
             }
 
+        }
+
+        void EnterShop()
+        {
+            int choice = GetInput("Would you like to enter the Shop?", "Start Shopping", "Resume Fights");
+
+            if (choice == 0)
+            {
+                TheShop();
+            }
+            else if (choice == 1)
+            {
+                _currentScene = Scene.BATTLE;
+            }
         }
 
         private string[] GetShopMenuOptions()
@@ -508,10 +523,10 @@ namespace BattleArenaExpansion
             return itemName;
         }
 
-        void Shop()
+        void TheShop()
         {
             //shows the player gold and inventory
-            Console.WriteLine("Your gold: " + _player.MoneyAmount);
+            Console.WriteLine("Your gold: " + _player.Money);
             Console.WriteLine("Your inventory: ");
 
             for (int i = 0; i < _player.GetItemNames().Length; i++)
@@ -543,7 +558,7 @@ namespace BattleArenaExpansion
                     {
                         if (_shop.Sell(_player, 2))
                         {
-                            _player.Buy(_orbOfDarkness);
+                            _player.Buy(_chestplate);
                         }
                         break;
                     }
@@ -551,7 +566,7 @@ namespace BattleArenaExpansion
                     {
                         if (_shop.Sell(_player, 3))
                         {
-                            _player.Buy(_chestplate);
+                            _player.Buy(_orbOfDarkness);
                         }
                         break;
                     }

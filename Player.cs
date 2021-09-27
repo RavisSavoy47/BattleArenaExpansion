@@ -12,13 +12,16 @@ namespace BattleArenaExpansion
         private int _currentItemIndex;
         private string _job;
         private Item[] _inventory;
+        private float _money;
+
+        public float Money
+        {
+            get { return _money; }
+        }
 
         public Item[] Inventory
         {
-            get
-            {
-                return _inventory;
-            }
+            get { return _inventory; }
         }
 
         public override float DefensePower
@@ -76,7 +79,7 @@ namespace BattleArenaExpansion
 
         public Player(string name, float health, float attackPower, float defensePower, int money, Item[] items, string job) : base(name, health, attackPower, defensePower, money)
         {
-            _inventory = items;
+
             _items = items;
             _currentItem.Name = "Nothing";
             _job = job;
@@ -127,16 +130,41 @@ namespace BattleArenaExpansion
         /// <returns>The names of all the items in the player inventory</returns>
         public string[] GetItemNames()
         {
-            string[] itemNames = new string[_inventory.Length];
+            string[] itemNames = new string[_items.Length];
 
-            for (int i = 0; i < _inventory.Length; i++)
+            for (int i = 0; i < _items.Length; i++)
             {
-                itemNames[i] = _inventory[i].Name;
+                itemNames[i] = _items[i].Name;
             }
 
             return itemNames;
         }
 
+        public void Buy(Item item)
+        {
+            _money -= item.Cost;
+
+            Item[] GetItem = new Item[_items.Length + 1];
+
+
+            for (int i = 0; i < _items.Length; i++)
+            {
+                GetItem[i] = _items[i];
+            }
+
+            GetItem[GetItem.Length - 1] = item;
+
+            _items = GetItem;
+
+        }
+
+        public float GetMoney(Entity entity)
+        {
+            _money += entity.MoneyAmount;
+
+            return _money;
+
+        }
 
         public override void Save(StreamWriter writer)
         {

@@ -80,45 +80,6 @@ namespace BattleArenaExpansion
             return defender.TakeDamage(AttackPower);
         }
 
-        public float TakeMoney(float enemyMoney)
-        {
-            float moneyTaken = enemyMoney - MoneyAmount;
-
-            if (moneyTaken < 0)
-            {
-                moneyTaken = 0;
-                Console.WriteLine("");
-            }
-
-            _moneyAmount += moneyTaken;
-
-            return moneyTaken;
-        }
-
-        public float Money(Entity attacker)
-        {
-            return attacker.TakeMoney(_moneyAmount);
-        }
-
-        public void Buy(Item item)
-        {
-            _moneyAmount -= item.Cost;
-
-            Item[] GetItem = new Item[_inventory.Length + 1];
-
-
-            for (int i = 0; i < _inventory.Length; i++)
-            {
-                GetItem[i] = _inventory[i];
-            }
-
-            GetItem[GetItem.Length - 1] = item;
-
-            _inventory = GetItem;
-
-        }
-
-
         public virtual void Save(StreamWriter writer)
         {
             writer.WriteLine(_name);
