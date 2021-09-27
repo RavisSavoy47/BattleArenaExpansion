@@ -9,6 +9,7 @@ namespace BattleArenaExpansion
     {
         DEFENSE,
         ATTACK,
+        Health,
         NONE
     }
 
@@ -49,6 +50,7 @@ namespace BattleArenaExpansion
         private Item _gloves;
         private Item _chestplate;
         private Item _orbOfDarkness;
+        private Item _miniHealth;
         /// <summary>
         /// Function that starts the main game loop
         /// </summary>
@@ -73,6 +75,8 @@ namespace BattleArenaExpansion
             _chestplate = new Item { Name = "Golden Armor", StatBoost = 200, Type = ItemType.DEFENSE, Cost = 100 };
             _orbOfDarkness = new Item { Name = "Powerful Orb", StatBoost = 200, Type = ItemType.ATTACK, Cost = 100 };
 
+            //Shop Heals
+            _miniHealth = new Item { }
 
             //Wizard Items
             Item bigWand = new Item { Name = "Clover Staff", StatBoost = 50, Type = ItemType.ATTACK, Cost = 0};
