@@ -12,6 +12,8 @@ namespace BattleArenaExpansion
         private float _attackPower;
         private float _defensePower;
         private float _moneyAmount;
+        private Player _player;
+        private Item[] _inventory;
 
         public string Name
         {
@@ -55,6 +57,7 @@ namespace BattleArenaExpansion
             _attackPower = attackPower;
             _defensePower = defensePower;
             _moneyAmount = moneyAmount;
+            _inventory = new Item[0];
         }
 
 
@@ -96,6 +99,25 @@ namespace BattleArenaExpansion
         {
             return attacker.TakeMoney(_moneyAmount);
         }
+
+        public void Buy(Item item)
+        {
+            _moneyAmount -= item.Cost;
+
+            Item[] GetItem = new Item[_inventory.Length + 1];
+
+
+            for (int i = 0; i < _inventory.Length; i++)
+            {
+                GetItem[i] = _inventory[i];
+            }
+
+            GetItem[GetItem.Length - 1] = item;
+
+            _inventory = GetItem;
+
+        }
+
 
         public virtual void Save(StreamWriter writer)
         {

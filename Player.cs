@@ -137,25 +137,6 @@ namespace BattleArenaExpansion
             return itemNames;
         }
 
-        public void Buy(Item item)
-        {
-            float yourMoney = MoneyAmount;
-            yourMoney -= item.Cost;
-
-            Item[] GetItem = new Item[_inventory.Length + 1];
-
-
-            for (int i = 0; i < _inventory.Length; i++)
-            {
-                GetItem[i] = _inventory[i];
-            }
-
-            GetItem[GetItem.Length - 1] = item;
-
-            _inventory = GetItem;
-
-        }
-  
 
         public override void Save(StreamWriter writer)
         {
