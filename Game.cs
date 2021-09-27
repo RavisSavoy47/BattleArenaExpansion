@@ -89,7 +89,7 @@ namespace BattleArenaExpansion
 
         public void InitializeEnimes()
         {
-            Entity SmallFrog = new Entity("Nice Frog", 35, 10, 5, 5);
+            Entity SmallFrog = new Entity("Nice Frog", 35, 10, 5, 5000);
 
             Entity StackedFrog = new Entity("Delux Frog", 55, 35, 13, 10);
 
@@ -560,7 +560,7 @@ namespace BattleArenaExpansion
                     break;
                 case 5:
                     return;
-                    break;
+
                 default:
                     {
                         return;

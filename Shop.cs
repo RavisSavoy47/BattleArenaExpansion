@@ -7,13 +7,10 @@ namespace BattleArenaExpansion
 {
     class Shop
     {
-        private int _money;
         private Item[] _inventory;
 
         public Shop(Item[] items)
         {
-            _money = 0;
-
             _inventory = items;
         }
 

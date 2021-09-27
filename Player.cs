@@ -61,7 +61,7 @@ namespace BattleArenaExpansion
 
         public Player()
         {
-            _inventory = new Item[4];
+            _inventory = new Item[0];
             _items = new Item[0];
             _currentItem.Name = "Nothing";
             _currentItemIndex = -1;
@@ -76,6 +76,7 @@ namespace BattleArenaExpansion
 
         public Player(string name, float health, float attackPower, float defensePower, int money, Item[] items, string job) : base(name, health, attackPower, defensePower, money)
         {
+            _inventory = items;
             _items = items;
             _currentItem.Name = "Nothing";
             _job = job;
@@ -92,7 +93,7 @@ namespace BattleArenaExpansion
             if (index >= _items.Length || index < 0)
             {
                 //..returns false
-                return false;
+                return true;
             }
 
             _currentItemIndex = index;
@@ -126,11 +127,11 @@ namespace BattleArenaExpansion
         /// <returns>The names of all the items in the player inventory</returns>
         public string[] GetItemNames()
         {
-            string[] itemNames = new string[_items.Length];
+            string[] itemNames = new string[_inventory.Length];
 
-            for (int i = 0; i < _items.Length; i++)
+            for (int i = 0; i < _inventory.Length; i++)
             {
-                itemNames[i] = _items[i].Name;
+                itemNames[i] = _inventory[i].Name;
             }
 
             return itemNames;
