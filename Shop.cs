@@ -47,7 +47,7 @@ namespace BattleArenaExpansion
         /// <returns></returns>
         public string[] GetItemNames()
         {
-            string[] itemNames = new string[_inventory.Length];
+            string[] itemNames = new string[_inventory.Length + 2];
 
             for (int i = 0; i < _inventory.Length; i++)
             {

@@ -51,6 +51,8 @@ namespace BattleArenaExpansion
         private Item _chestplate;
         private Item _orbOfDarkness;
         private Item _miniHealth;
+        private Item _largeHealth;
+
         /// <summary>
         /// Function that starts the main game loop
         /// </summary>
@@ -76,7 +78,8 @@ namespace BattleArenaExpansion
             _orbOfDarkness = new Item { Name = "Powerful Orb", StatBoost = 200, Type = ItemType.ATTACK, Cost = 100 };
 
             //Shop Heals
-            _miniHealth = new Item { }
+            _miniHealth = new Item { Name = "Small Potion", StatBoost = 25, Type = ItemType.Health, Cost = 10 };
+            _largeHealth = new Item { Name = "Large Potion", StatBoost = 100, Type = ItemType.Health, Cost =  80};
 
             //Wizard Items
             Item bigWand = new Item { Name = "Clover Staff", StatBoost = 50, Type = ItemType.ATTACK, Cost = 0};
@@ -87,23 +90,33 @@ namespace BattleArenaExpansion
             Item shoes = new Item { Name = "Cowboy Beard", StatBoost = 50, Type = ItemType.DEFENSE, Cost = 0};
 
             //Initialize arrays
-            _shopItems = new Item[] { _mightySword, _gloves, _chestplate, _orbOfDarkness };
+            _shopItems = new Item[] { _mightySword, _gloves, _chestplate, _orbOfDarkness, _miniHealth, _largeHealth };
             _wizardItems = new Item[] { bigWand, bigSheild };
             _knightItems = new Item[] { stick, shoes };
         }
 
         public void InitializeEnimes()
         { 
-            Entity SmallFrog = new Entity("Nice Frog", 35, 10, 5, 5);
+            Entity SmallFrog = new Entity("Nice Frog", 35, 10, 5, 10);
 
             Entity StackedFrog = new Entity("Delux Frog", 40, 15, 10, 10);
 
-            Entity MegaFrog = new Entity("Captain Frog", 100, 70, 13, 35);
+            Entity GangFrogs = new Entity("Group of Frogs", 60, 20, 10, 20);
 
-            Entity KingFrog = new Entity("The True Frog", 200, 55, 30, 100);
+            Entity ArmoredFrog = new Entity("Armored Frog", 75, 25, 10, 30);
+
+            Entity MegaFrog = new Entity("Captain Frog", 100, 70, 12, 35);
+
+            Entity MagicFrog = new Entity("Magical Frog", 110, 75, 15, 45);
+
+            Entity KnightFrog = new Entity("Knight Frog", 120, 80, 20, 50);
+
+            Entity WiseFrog = new Entity("Overseaer Frog", 150, 100, 50, 150);
+
+            Entity TrueFrog = new Entity("The True Frog", 250, 150, 75, 0);
 
             //enemies array
-            _enemies = new Entity[] { SmallFrog, StackedFrog, MegaFrog, KingFrog };
+            _enemies = new Entity[] { SmallFrog, StackedFrog, GangFrogs, ArmoredFrog, MegaFrog, MagicFrog, KnightFrog, WiseFrog, TrueFrog };
 
             _currentEnemy = _enemies[_currentEnemyIndex];
         }
@@ -367,13 +380,13 @@ namespace BattleArenaExpansion
 
             if (choice == 0)
             {
-                _player = new Player(_playerName, 200, 45, 35, 0, _wizardItems, "Wizard");
+                _player = new Player(_playerName, 150, 45, 35, 0, _wizardItems, "Wizard");
                 _currentScene++;
             }
 
             else if (choice == 1)
             {
-                _player = new Player(_playerName, 100, 75, 40, 0, _knightItems, "Knight");
+                _player = new Player(_playerName, 100, 75, 35, 0, _knightItems, "Knight");
                 _currentScene++;
             }
         }
@@ -549,7 +562,7 @@ namespace BattleArenaExpansion
                 Console.WriteLine(_player.GetItemNames()[i]);
             }
 
-            //lets the player choose wha item they want to buy
+            //lets the player choose what item they want to buy
             int choice = GetInput("\nWelcome! Please selct an item.", GetShopMenuOptions());
 
             switch (choice)
@@ -587,9 +600,28 @@ namespace BattleArenaExpansion
                         break;
                     }
                 case 4:
-                    Save();
-                    break;
+                    {
+                        if (_shop.Sell(_player, 3))
+                        {
+                            _player.Buy(_miniHealth);
+                        }
+                        break;
+                    }
                 case 5:
+                    {
+                        if (_shop.Sell(_player, 3))
+                        {
+                            _player.Buy(_largeHealth);
+                        }
+                        break;
+                    }
+                case 6:
+                    Save();
+                    Console.WriteLine("Saved Game");
+                    Console.ReadKey(true);
+                    Console.Clear();
+                    break;
+                case 7:
                     _currentScene = Scene.BATTLE;
                     break;
 

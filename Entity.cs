@@ -57,7 +57,7 @@ namespace BattleArenaExpansion
             _attackPower = attackPower;
             _defensePower = defensePower;
             _moneyAmount = moneyAmount;
-            _inventory = new Item[0];
+            _inventory = new Item[10];
         }
 
 
