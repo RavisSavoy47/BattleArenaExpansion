@@ -8,7 +8,7 @@ namespace BattleArenaExpansion
     class Player : Entity
     {
         private Item[] _items;
-        private Item[] _equipedItem;
+        private Item[] _equippedItem;
         private Item _currentItem;
         private int _currentItemIndex;
         private string _job;
@@ -29,7 +29,7 @@ namespace BattleArenaExpansion
         {
             get
             {
-                if (_currentItem.Type == ItemType.DEFENSE)
+                if (_equippedItem[1].Type == ItemType.DEFENSE)
                     return base.DefensePower + CurrentItem.StatBoost;
 
                 return base.DefensePower;
@@ -39,7 +39,7 @@ namespace BattleArenaExpansion
         {
             get
             {
-                if (_currentItem.Type == ItemType.ATTACK)
+                if (_equippedItem[0].Type == ItemType.ATTACK)
                     return base.AttackPower + CurrentItem.StatBoost;
 
                 return base.AttackPower;
@@ -69,6 +69,7 @@ namespace BattleArenaExpansion
             _items = new Item[10];
             _currentItem.Name = "Nothing";
             _currentItemIndex = -1;
+            _equippedItem = new Item[2];
         }
 
         public Player(Item[] items) : base()
@@ -76,6 +77,7 @@ namespace BattleArenaExpansion
             _currentItem.Name = "Nothing";
             _items = items;
             _currentItemIndex = -1;
+            _equippedItem = new Item[2];
         }
 
         public Player(string name, float health, float attackPower, float defensePower, int money, Item[] items, string job) : base(name, health, attackPower, defensePower, money)
@@ -85,6 +87,7 @@ namespace BattleArenaExpansion
             _currentItem.Name = "Nothing";
             _job = job;
             _currentItemIndex = -1;
+            _equippedItem = new Item[2];
         }
         /// <summary>
         /// Sets the item at thh egiven index to be the current item
@@ -105,8 +108,20 @@ namespace BattleArenaExpansion
             //Set the current item to be the array of the given index
             _currentItem = _items[_currentItemIndex];
 
+            // Sets an attack item to the first equipped item slot
+            if (_currentItem.Type == ItemType.ATTACK)
+            {
+                _equippedItem[0] = _currentItem;
+            }
+
+            // Sets a defense item to the second equipped item slot
+            else if (_currentItem.Type == ItemType.DEFENSE)
+            {
+                _equippedItem[1] = _currentItem;
+            }
+
             //if the boost health
-            if (_currentItem.Type == ItemType.Health)
+            else if (_currentItem.Type == ItemType.Health)
             {
                 //add the statboost to the player's health
                 _health += _currentItem.StatBoost;

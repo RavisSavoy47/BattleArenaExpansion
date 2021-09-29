@@ -72,22 +72,22 @@ namespace BattleArenaExpansion
         public void InitializeItems()
         {
             //Shop Items
-            _mightySword = new Item { Name = "Enchanted Sword", StatBoost = 60, Type = ItemType.ATTACK, Cost = 30 };
-            _gloves = new Item { Name = "Fast Gloves", StatBoost = 65, Type = ItemType.DEFENSE, Cost = 30 };
-            _chestplate = new Item { Name = "Golden Armor", StatBoost = 200, Type = ItemType.DEFENSE, Cost = 100 };
-            _orbOfDarkness = new Item { Name = "Powerful Orb", StatBoost = 200, Type = ItemType.ATTACK, Cost = 100 };
+            _mightySword = new Item { Name = "Enchanted Sword", StatBoost = 60, Type = ItemType.ATTACK, Cost = 15 };
+            _gloves = new Item { Name = "Fast Gloves", StatBoost = 65, Type = ItemType.DEFENSE, Cost = 15 };
+            _chestplate = new Item { Name = "Golden Armor", StatBoost = 200, Type = ItemType.DEFENSE, Cost = 75 };
+            _orbOfDarkness = new Item { Name = "Powerful Orb", StatBoost = 200, Type = ItemType.ATTACK, Cost = 75 };
 
             //Shop Heals
             _miniHealth = new Item { Name = "Small Potion", StatBoost = 25, Type = ItemType.Health, Cost = 10 };
-            _largeHealth = new Item { Name = "Large Potion", StatBoost = 100, Type = ItemType.Health, Cost =  80};
+            _largeHealth = new Item { Name = "Large Potion", StatBoost = 100, Type = ItemType.Health, Cost =  35};
 
             //Wizard Items
-            Item bigWand = new Item { Name = "Clover Staff", StatBoost = 50, Type = ItemType.ATTACK, Cost = 0};
-            Item bigSheild = new Item { Name = "Enchanted Robes", StatBoost = 50, Type = ItemType.DEFENSE, Cost = 0};
+            Item bigWand = new Item { Name = "Clover Staff", StatBoost = 20, Type = ItemType.ATTACK, Cost = 0};
+            Item bigSheild = new Item { Name = "Enchanted Robes", StatBoost = 20, Type = ItemType.DEFENSE, Cost = 0};
 
             //Knight Items
-            Item stick = new Item { Name = "Kitchen Gun", StatBoost = 50, Type = ItemType.ATTACK, Cost = 0};
-            Item shoes = new Item { Name = "Cowboy Beard", StatBoost = 50, Type = ItemType.DEFENSE, Cost = 0};
+            Item stick = new Item { Name = "Kitchen Gun", StatBoost = 20, Type = ItemType.ATTACK, Cost = 0};
+            Item shoes = new Item { Name = "Cowboy Beard", StatBoost = 20, Type = ItemType.DEFENSE, Cost = 0};
 
             //Initialize arrays
             _shopItems = new Item[] { _mightySword, _gloves, _chestplate, _orbOfDarkness, _miniHealth, _largeHealth };
@@ -99,7 +99,7 @@ namespace BattleArenaExpansion
         { 
             Entity SmallFrog = new Entity("Nice Frog", 35, 10, 5, 10);
 
-            Entity SadFrog = new Entity("Sad Frog", 35, 0, 0, 10);
+            Entity SadFrog = new Entity("Sad Frog", 20, 5, 5, 10);
 
             Entity StackedFrog = new Entity("Delux Frog", 40, 15, 10, 10);
 
@@ -382,13 +382,13 @@ namespace BattleArenaExpansion
 
             if (choice == 0)
             {
-                _player = new Player(_playerName, 150, 45, 35, 0, _wizardItems, "Wizard");
+                _player = new Player(_playerName, 45, 15, 25, 0, _wizardItems, "Wizard");
                 _currentScene++;
             }
 
             else if (choice == 1)
             {
-                _player = new Player(_playerName, 100, 75, 35, 0, _knightItems, "Knight");
+                _player = new Player(_playerName, 65, 20, 15, 0, _knightItems, "Knight");
                 _currentScene++;
             }
         }
@@ -543,7 +543,7 @@ namespace BattleArenaExpansion
             //Copy the values from the old array into the new array
             for (int i = 0; i < _shopItems.Length; i++)
             {
-                itemName[i] = _shopItems[i].Name;
+                itemName[i] = _shopItems[i].Name + ": $ " + _shopItems[i].Cost;
             }
 
             itemName[_shopItems.Length] = "Save";
@@ -567,71 +567,26 @@ namespace BattleArenaExpansion
             //lets the player choose what item they want to buy
             int choice = GetInput("\nWelcome! Please selct an item.", GetShopMenuOptions());
 
-            switch (choice)
+            if (choice > -1 && choice <= _shopItems.Length)
             {
-                case 0:
-                    {
-                        if (_shop.Sell(_player, 0))
-                        {
-                            _player.Buy(_mightySword);
-                        }
-                        break;
-                    }
-                case 1:
-                    {
-                        if (_shop.Sell(_player, 1))
-                        {
-                            _player.Buy(_gloves);
-                        }
-                        break;
-                    }
-                case 2:
-                    {
-                        if (_shop.Sell(_player, 2))
-                        {
-                            _player.Buy(_chestplate);
-                        }
-                        break;
-                    }
-                case 3:
-                    {
-                        if (_shop.Sell(_player, 3))
-                        {
-                            _player.Buy(_orbOfDarkness);
-                        }
-                        break;
-                    }
-                case 4:
-                    {
-                        if (_shop.Sell(_player, 4))
-                        {
-                            _player.Buy(_miniHealth);
-                        }
-                        break;
-                    }
-                case 5:
-                    {
-                        if (_shop.Sell(_player, 5))
-                        {
-                            _player.Buy(_largeHealth);
-                        }
-                        break;
-                    }
-                case 6:
-                    Save();
-                    Console.WriteLine("Saved Game");
-                    Console.ReadKey(true);
-                    Console.Clear();
-                    break;
-                case 7:
-                    _currentScene = Scene.BATTLE;
-                    break;
-
-                default:
-                    {
-                        return;
-                    }
+                if (_shop.Sell(_player, choice))
+                {
+                    _player.Buy(_shopItems[choice]);
+                }
             }
+
+            else if (choice == _shopItems.Length)
+            {
+                Save();
+                Console.WriteLine("Saved Game");
+                Console.ReadKey(true);
+                Console.Clear();
+            }
+            else if (choice == _shopItems.Length + 1)
+            {
+                _currentScene = Scene.BATTLE;
+            }
+
         }
 
     }
