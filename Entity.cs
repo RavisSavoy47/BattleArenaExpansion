@@ -21,9 +21,9 @@ namespace BattleArenaExpansion
             get { return _name; }
         }
 
-        public float MaxHealth
+        public float Health
         {
-            get { return _maxHealth; }
+            get { return _health; }
         }
 
 
@@ -52,14 +52,14 @@ namespace BattleArenaExpansion
             _moneyAmount = 0;
         }
 
-        public Entity(string name, float MaxHealth, float attackPower, float defensePower, float moneyAmount)
+        public Entity(string name, float health, float attackPower, float defensePower, float moneyAmount)
         {
             _name = name;
-            _health = MaxHealth;
+            _health = health;
             _attackPower = attackPower;
             _defensePower = defensePower;
             _moneyAmount = moneyAmount;
-            _inventory = new Item[10];
+            _inventory = new Item[16];
         }
 
 

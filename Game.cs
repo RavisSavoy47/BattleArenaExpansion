@@ -83,7 +83,7 @@ namespace BattleArenaExpansion
             _scriptOfPower = new Item { Name = "Old Message", StatBoost = 100, Type = ItemType.ATTACK, Cost = 80 };
             _strawHat = new Item { Name = "Famous Hat", StatBoost = 100, Type = ItemType.DEFENSE, Cost = 80};
             _unclePhilBlade = new Item { Name = "UnclePhil's Treasure", StatBoost = 300, Type = ItemType.DEFENSE, Cost = 150};
-            _wompusShell = new Item { Name = "The Cage of Thwopus", StatBoost = 200, Type = ItemType.DEFENSE, Cost = 130};
+            _wompusShell = new Item { Name = "The Cage of Thwopus", StatBoost = 200, Type = ItemType.DEFENSE, Cost = 150};
 
             //Shop Heals
             _miniHealth = new Item { Name = "Small Potion", StatBoost = 25, Type = ItemType.Health, Cost = 10 };
@@ -130,7 +130,7 @@ namespace BattleArenaExpansion
             Entity TrueFrog = new Entity("The True Frog", 250, 150, 75, 0);
 
             //enemies array
-            _enemies = new Entity[] { SmallFrog, SadFrog, StackedFrog, MightyFrog, GangFrogs, ArmoredFrog, MegaFrog, MagicFrog, KnightFrog, WiseFrog, TrueFrog };
+            _enemies = new Entity[] { SmallFrog, SadFrog, StackedFrog, MightyFrog, GangFrogs, ArmoredFrog, MegaFrog, PoisonFrog, MagicFrog, KnightFrog, WiseFrog, TrueFrog };
 
             _currentEnemy = _enemies[_currentEnemyIndex];
         }
@@ -412,7 +412,7 @@ namespace BattleArenaExpansion
         void DisplayStats(Entity character)
         {
             Console.WriteLine("Name: " + character.Name);
-            Console.WriteLine("Health: " + character.MaxHealth);
+            Console.WriteLine("Health: " + character.Health);
             Console.WriteLine("Attack: " + character.AttackPower);
             Console.WriteLine("Defense: " + character.DefensePower);
             Console.WriteLine();
@@ -505,7 +505,7 @@ namespace BattleArenaExpansion
 
             Console.Clear();
             //If the player dies they are asked if they want to keep playing or not
-            if (_player.MaxHealth <= 0)
+            if (_player.Health <= 0)
             {
                 Console.WriteLine("You died! Get Gud!");
                 Console.ReadKey(true);
@@ -513,7 +513,7 @@ namespace BattleArenaExpansion
                 _currentScene = Scene.RESTARTMENU;
             }
             //check if the enemy dies
-            else if (_currentEnemy.MaxHealth <= 0)
+            else if (_currentEnemy.Health <= 0)
             {
                 //Sets the 
                 enemyMoney = _player.GetMoney(_currentEnemy);
@@ -579,16 +579,23 @@ namespace BattleArenaExpansion
             //lets the player choose what item they want to buy
             int choice = GetInput("\nWelcome! Please selct an item.", GetShopMenuOptions());
 
-            if (choice > -1 && choice <= _shopItems.Length)
+            if (choice > -1 && choice < _shopItems.Length)
             {
                 if (_shop.Sell(_player, choice))
                 {
                     _player.Buy(_shopItems[choice]);
                 }
             }
-
-            //return to the battle scene
             else if (choice == _shopItems.Length)
+            {
+                Save();
+                Console.WriteLine("Saved Game");
+                Console.ReadKey(true);
+                Console.Clear();
+                return;
+            }
+            //return to the battle scene
+            else if (choice == _shopItems.Length + 1)
             {
                 _currentScene = Scene.BATTLE;
             }

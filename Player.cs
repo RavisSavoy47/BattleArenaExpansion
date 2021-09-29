@@ -65,8 +65,8 @@ namespace BattleArenaExpansion
 
         public Player()
         {
-            _inventory = new Item[10];
-            _items = new Item[10];
+            _inventory = new Item[16];
+            _items = new Item[16];
             _currentItem.Name = "Nothing";
             _currentItemIndex = -1;
             _equippedItem = new Item[2];
@@ -80,7 +80,7 @@ namespace BattleArenaExpansion
             _equippedItem = new Item[2];
         }
 
-        public Player(string name, float MaxHealth, float attackPower, float defensePower, int money, Item[] items, string job) : base(name, MaxHealth, attackPower, defensePower, money)
+        public Player(string name, float health, float attackPower, float defensePower, int money, Item[] items, string job) : base(name, health, attackPower, defensePower, money)
         {
             _money = money;
             _items = items;
