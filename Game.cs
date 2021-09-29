@@ -99,6 +99,8 @@ namespace BattleArenaExpansion
         { 
             Entity SmallFrog = new Entity("Nice Frog", 35, 10, 5, 10);
 
+            Entity SadFrog = new Entity("Sad Frog", 35, 0, 0, 10);
+
             Entity StackedFrog = new Entity("Delux Frog", 40, 15, 10, 10);
 
             Entity GangFrogs = new Entity("Group of Frogs", 60, 20, 10, 20);
@@ -116,7 +118,7 @@ namespace BattleArenaExpansion
             Entity TrueFrog = new Entity("The True Frog", 250, 150, 75, 0);
 
             //enemies array
-            _enemies = new Entity[] { SmallFrog, StackedFrog, GangFrogs, ArmoredFrog, MegaFrog, MagicFrog, KnightFrog, WiseFrog, TrueFrog };
+            _enemies = new Entity[] { SmallFrog, SadFrog, StackedFrog, GangFrogs, ArmoredFrog, MegaFrog, MagicFrog, KnightFrog, WiseFrog, TrueFrog };
 
             _currentEnemy = _enemies[_currentEnemyIndex];
         }
@@ -503,7 +505,7 @@ namespace BattleArenaExpansion
             {
                 //Sets the 
                 enemyMoney = _player.GetMoney(_currentEnemy);
-                Console.WriteLine("You Defeated " + _currentEnemy.Name + "You Collected " + enemyMoney + " Money!");
+                Console.WriteLine("You Defeated " + _currentEnemy.Name + " You Collected " + enemyMoney + " Money!");
                 
                 Console.ReadKey();
                 Console.Clear();
@@ -601,7 +603,7 @@ namespace BattleArenaExpansion
                     }
                 case 4:
                     {
-                        if (_shop.Sell(_player, 3))
+                        if (_shop.Sell(_player, 4))
                         {
                             _player.Buy(_miniHealth);
                         }
@@ -609,7 +611,7 @@ namespace BattleArenaExpansion
                     }
                 case 5:
                     {
-                        if (_shop.Sell(_player, 3))
+                        if (_shop.Sell(_player, 5))
                         {
                             _player.Buy(_largeHealth);
                         }

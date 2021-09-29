@@ -8,6 +8,7 @@ namespace BattleArenaExpansion
     class Player : Entity
     {
         private Item[] _items;
+        private Item[] _equipedItem;
         private Item _currentItem;
         private int _currentItemIndex;
         private string _job;
@@ -103,6 +104,40 @@ namespace BattleArenaExpansion
 
             //Set the current item to be the array of the given index
             _currentItem = _items[_currentItemIndex];
+
+            //if the boost health
+            if (_currentItem.Type == ItemType.Health)
+            {
+                //add the statboost to the player's health
+                _health += _currentItem.StatBoost;
+                Console.WriteLine("You recovered " + _currentItem.StatBoost + " health!");
+                Console.ReadKey(true);
+                Console.Clear();
+
+                Item[] newInventory = new Item[_items.Length - 1];
+
+                int j = 0;
+
+                bool itemRemoved = false;
+
+                //..and remove the item from the inventory
+                for (int i = 0; i < _items.Length; i++)
+                {
+                    if(_items[i].Name != _currentItem.Name || itemRemoved)
+                    {
+                        newInventory[j] = _items[i];
+                        j++;
+                    }
+                    else
+                    {
+                        itemRemoved = true;
+                    }
+                }
+
+                //set the old inventory equal to the new one
+                _items = newInventory;
+            }
+
 
             return true;
         }

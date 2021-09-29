@@ -8,7 +8,7 @@ namespace BattleArenaExpansion
     class Entity
     {
         private string _name;
-        private float _health;
+        protected float _health;
         private float _attackPower;
         private float _defensePower;
         private float _moneyAmount;
