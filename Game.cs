@@ -52,6 +52,10 @@ namespace BattleArenaExpansion
         private Item _orbOfDarkness;
         private Item _miniHealth;
         private Item _largeHealth;
+        private Item _scriptOfPower;
+        private Item _strawHat;
+        private Item _unclePhilBlade;
+        private Item _wompusShell;
 
         /// <summary>
         /// Function that starts the main game loop
@@ -74,42 +78,50 @@ namespace BattleArenaExpansion
             //Shop Items
             _mightySword = new Item { Name = "Enchanted Sword", StatBoost = 60, Type = ItemType.ATTACK, Cost = 15 };
             _gloves = new Item { Name = "Fast Gloves", StatBoost = 65, Type = ItemType.DEFENSE, Cost = 15 };
-            _chestplate = new Item { Name = "Golden Armor", StatBoost = 200, Type = ItemType.DEFENSE, Cost = 75 };
-            _orbOfDarkness = new Item { Name = "Powerful Orb", StatBoost = 200, Type = ItemType.ATTACK, Cost = 75 };
+            _chestplate = new Item { Name = "Golden Armor", StatBoost = 80, Type = ItemType.DEFENSE, Cost = 45 };
+            _orbOfDarkness = new Item { Name = "Powerful Orb", StatBoost = 80, Type = ItemType.ATTACK, Cost = 45 };
+            _scriptOfPower = new Item { Name = "Old Message", StatBoost = 100, Type = ItemType.ATTACK, Cost = 80 };
+            _strawHat = new Item { Name = "Famous Hat", StatBoost = 100, Type = ItemType.DEFENSE, Cost = 80};
+            _unclePhilBlade = new Item { Name = "UnclePhil's Treasure", StatBoost = 300, Type = ItemType.DEFENSE, Cost = 150};
+            _wompusShell = new Item { Name = "The Cage of Thwopus", StatBoost = 200, Type = ItemType.DEFENSE, Cost = 130};
 
             //Shop Heals
             _miniHealth = new Item { Name = "Small Potion", StatBoost = 25, Type = ItemType.Health, Cost = 10 };
             _largeHealth = new Item { Name = "Large Potion", StatBoost = 100, Type = ItemType.Health, Cost =  35};
 
             //Wizard Items
-            Item bigWand = new Item { Name = "Clover Staff", StatBoost = 20, Type = ItemType.ATTACK, Cost = 0};
-            Item bigSheild = new Item { Name = "Enchanted Robes", StatBoost = 20, Type = ItemType.DEFENSE, Cost = 0};
+            Item bigWand = new Item { Name = "Clover Staff", StatBoost = 10, Type = ItemType.ATTACK, Cost = 0};
+            Item bigSheild = new Item { Name = "Enchanted Robes", StatBoost = 10, Type = ItemType.DEFENSE, Cost = 0};
 
             //Knight Items
-            Item stick = new Item { Name = "Kitchen Gun", StatBoost = 20, Type = ItemType.ATTACK, Cost = 0};
-            Item shoes = new Item { Name = "Cowboy Beard", StatBoost = 20, Type = ItemType.DEFENSE, Cost = 0};
+            Item stick = new Item { Name = "Kitchen Gun", StatBoost = 10, Type = ItemType.ATTACK, Cost = 0};
+            Item shoes = new Item { Name = "Cowboy Beard", StatBoost = 10, Type = ItemType.DEFENSE, Cost = 0};
 
             //Initialize arrays
-            _shopItems = new Item[] { _mightySword, _gloves, _chestplate, _orbOfDarkness, _miniHealth, _largeHealth };
+            _shopItems = new Item[] { _mightySword, _gloves, _chestplate, _orbOfDarkness, _miniHealth, _largeHealth, _scriptOfPower, _strawHat, _unclePhilBlade, _wompusShell};
             _wizardItems = new Item[] { bigWand, bigSheild };
             _knightItems = new Item[] { stick, shoes };
         }
 
         public void InitializeEnimes()
         { 
-            Entity SmallFrog = new Entity("Nice Frog", 35, 10, 5, 10);
+            Entity SmallFrog = new Entity("Nice Frog", 35, 10, 5, 5);
 
-            Entity SadFrog = new Entity("Sad Frog", 20, 5, 5, 10);
+            Entity SadFrog = new Entity("Sad Frog", 20, 5, 5, 5);
 
             Entity StackedFrog = new Entity("Delux Frog", 40, 15, 10, 10);
 
-            Entity GangFrogs = new Entity("Group of Frogs", 60, 20, 10, 20);
+            Entity MightyFrog = new Entity("Enraged Frog", 65, 35, 10, 15);
 
-            Entity ArmoredFrog = new Entity("Armored Frog", 75, 25, 10, 30);
+            Entity GangFrogs = new Entity("Group of Frogs", 60, 20, 10, 10);
 
-            Entity MegaFrog = new Entity("Captain Frog", 100, 70, 12, 35);
+            Entity ArmoredFrog = new Entity("Armored Frog", 75, 25, 10, 40);
 
-            Entity MagicFrog = new Entity("Magical Frog", 110, 75, 15, 45);
+            Entity MegaFrog = new Entity("Captain Frog", 100, 70, 12, 30);
+
+            Entity PoisonFrog = new Entity("Glowing Frog", 125, 80, 25, 75);
+
+            Entity MagicFrog = new Entity("Magical Frog", 110, 75, 30, 55);
 
             Entity KnightFrog = new Entity("Knight Frog", 120, 80, 20, 50);
 
@@ -118,7 +130,7 @@ namespace BattleArenaExpansion
             Entity TrueFrog = new Entity("The True Frog", 250, 150, 75, 0);
 
             //enemies array
-            _enemies = new Entity[] { SmallFrog, SadFrog, StackedFrog, GangFrogs, ArmoredFrog, MegaFrog, MagicFrog, KnightFrog, WiseFrog, TrueFrog };
+            _enemies = new Entity[] { SmallFrog, SadFrog, StackedFrog, MightyFrog, GangFrogs, ArmoredFrog, MegaFrog, MagicFrog, KnightFrog, WiseFrog, TrueFrog };
 
             _currentEnemy = _enemies[_currentEnemyIndex];
         }
@@ -382,13 +394,13 @@ namespace BattleArenaExpansion
 
             if (choice == 0)
             {
-                _player = new Player(_playerName, 45, 15, 25, 0, _wizardItems, "Wizard");
+                _player = new Player(_playerName, 100, 15, 20, 0, _wizardItems, "Wizard");
                 _currentScene++;
             }
 
             else if (choice == 1)
             {
-                _player = new Player(_playerName, 65, 20, 15, 0, _knightItems, "Knight");
+                _player = new Player(_playerName, 100, 20, 15, 0, _knightItems, "Knight");
                 _currentScene++;
             }
         }
@@ -400,7 +412,7 @@ namespace BattleArenaExpansion
         void DisplayStats(Entity character)
         {
             Console.WriteLine("Name: " + character.Name);
-            Console.WriteLine("Health: " + character.Health);
+            Console.WriteLine("Health: " + character.MaxHealth);
             Console.WriteLine("Attack: " + character.AttackPower);
             Console.WriteLine("Defense: " + character.DefensePower);
             Console.WriteLine();
@@ -493,7 +505,7 @@ namespace BattleArenaExpansion
 
             Console.Clear();
             //If the player dies they are asked if they want to keep playing or not
-            if (_player.Health <= 0)
+            if (_player.MaxHealth <= 0)
             {
                 Console.WriteLine("You died! Get Gud!");
                 Console.ReadKey(true);
@@ -501,7 +513,7 @@ namespace BattleArenaExpansion
                 _currentScene = Scene.RESTARTMENU;
             }
             //check if the enemy dies
-            else if (_currentEnemy.Health <= 0)
+            else if (_currentEnemy.MaxHealth <= 0)
             {
                 //Sets the 
                 enemyMoney = _player.GetMoney(_currentEnemy);
@@ -575,14 +587,8 @@ namespace BattleArenaExpansion
                 }
             }
 
+            //return to the battle scene
             else if (choice == _shopItems.Length)
-            {
-                Save();
-                Console.WriteLine("Saved Game");
-                Console.ReadKey(true);
-                Console.Clear();
-            }
-            else if (choice == _shopItems.Length + 1)
             {
                 _currentScene = Scene.BATTLE;
             }

@@ -80,7 +80,7 @@ namespace BattleArenaExpansion
             _equippedItem = new Item[2];
         }
 
-        public Player(string name, float health, float attackPower, float defensePower, int money, Item[] items, string job) : base(name, health, attackPower, defensePower, money)
+        public Player(string name, float MaxHealth, float attackPower, float defensePower, int money, Item[] items, string job) : base(name, MaxHealth, attackPower, defensePower, money)
         {
             _money = money;
             _items = items;
@@ -125,6 +125,11 @@ namespace BattleArenaExpansion
             {
                 //add the statboost to the player's health
                 _health += _currentItem.StatBoost;
+
+                if (_health > _maxHealth)
+                {
+                    _health = _maxHealth;
+                }
                 Console.WriteLine("You recovered " + _currentItem.StatBoost + " health!");
                 Console.ReadKey(true);
                 Console.Clear();
@@ -246,6 +251,8 @@ namespace BattleArenaExpansion
             {
                 writer.WriteLine(_items[i].Name);
             }
+
+            
         }
 
         public override bool Load(StreamReader reader)
