@@ -285,7 +285,7 @@ namespace BattleArenaExpansion
         /// <summary>
         /// Calls the appropriate function(s) based on the current scene index
         /// </summary>
-        void DisplayCurrentScene()
+        public void DisplayCurrentScene()
         {
             //Goes through each Scene
             switch (_currentScene)
@@ -318,7 +318,7 @@ namespace BattleArenaExpansion
         /// <summary>
         /// Displays the menu that allows the player to start or quit the game
         /// </summary>
-        void DisplayRestartMenu()
+        public void DisplayRestartMenu()
         {
             int Choice = GetInput("Do you want to Restart your Adventure?", "Yes", "No");
 
@@ -368,7 +368,7 @@ namespace BattleArenaExpansion
         /// Displays text asking for the players name. Doesn't transition to the next section
         /// until the player decides to keep the name.
         /// </summary>
-        void GetPlayerName()
+        public void GetPlayerName()
         {
             Console.WriteLine("Welcome to Hell! What's your name?");
             Console.Write(">");
@@ -409,7 +409,7 @@ namespace BattleArenaExpansion
         /// Prints a characters stats to the console
         /// </summary>
         /// <param name="">The character that will have its stats shown</param>
-        void DisplayStats(Entity character)
+        public void DisplayStats(Entity character)
         {
             Console.WriteLine("Name: " + character.Name);
             Console.WriteLine("Health: " + character.Health);
@@ -499,7 +499,7 @@ namespace BattleArenaExpansion
         /// Checks to see if either the player or the enemy has won the current battle.
         /// Updates the game based on who won the battle..
         /// </summary>
-        void CheckBattleResults()
+        public void CheckBattleResults()
         {
             float enemyMoney = 0;
 
@@ -534,7 +534,7 @@ namespace BattleArenaExpansion
 
         }
 
-        void EnterShop()
+        public void EnterShop()
         {
             int choice = GetInput("Would you like to enter the Shop?", "Start Shopping", "Resume Fights");
 
@@ -564,7 +564,7 @@ namespace BattleArenaExpansion
             return itemName;
         }
 
-        void TheShop()
+        public void TheShop()
         {
             //shows the player gold and inventory
             Console.WriteLine("Your gold: " + _player.Money);
