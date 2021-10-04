@@ -13,7 +13,6 @@ namespace BattleArenaExpansion
         private float _attackPower;
         private float _defensePower;
         private float _moneyAmount;
-        private Player _player;
         private Item[] _inventory;
 
         public string Name
@@ -42,7 +41,7 @@ namespace BattleArenaExpansion
             get { return _moneyAmount; }
         }
 
-
+        //Set the base values for all entities
         public Entity()
         {
             _name = "Default";
@@ -52,6 +51,7 @@ namespace BattleArenaExpansion
             _moneyAmount = 0;
         }
 
+        //Stating the bases for each entity
         public Entity(string name, float health, float attackPower, float defensePower, float moneyAmount)
         {
             _name = name;
@@ -62,7 +62,7 @@ namespace BattleArenaExpansion
             _inventory = new Item[16];
         }
 
-
+        //Gets the damage
         public float TakeDamage(float damageAmount)
         {
             float damageTaken = damageAmount - DefensePower;

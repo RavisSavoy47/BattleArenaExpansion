@@ -126,14 +126,17 @@ namespace BattleArenaExpansion
                 //add the statboost to the player's health
                 _health += _currentItem.StatBoost;
 
+                //checks if your health is higher than max
                 if (_health > _maxHealth)
                 {
+                    //..then makes the health equal to max
                     _health = _maxHealth;
                 }
                 Console.WriteLine("You recovered " + _currentItem.StatBoost + " health!");
                 Console.ReadKey(true);
                 Console.Clear();
 
+                //makes a new inventory
                 Item[] newInventory = new Item[_items.Length - 1];
 
                 int j = 0;

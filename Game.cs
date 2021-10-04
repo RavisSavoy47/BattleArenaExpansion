@@ -188,7 +188,7 @@ namespace BattleArenaExpansion
             //If the file exist..
             if (!File.Exists("SaveData.txt"))
                 //..return false
-                loadSuccessfull = false;
+                return loadSuccessfull = false;
 
             //Create a new reader to read from the text file
             StreamReader reader = new StreamReader("SaveData.txt");
