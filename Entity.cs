@@ -62,7 +62,7 @@ namespace BattleArenaExpansion
             _inventory = new Item[16];
         }
 
-        //Gets the damage
+        //Gets the damage for each entity
         public float TakeDamage(float damageAmount)
         {
             float damageTaken = damageAmount - DefensePower;
@@ -77,6 +77,11 @@ namespace BattleArenaExpansion
             return damageTaken;
         }
 
+        /// <summary>
+        /// Gets the damage and returns it
+        /// </summary>
+        /// <param name="defender"></param>
+        /// <returns></returns>
         public float Attack(Entity defender)
         {
             return defender.TakeDamage(AttackPower);
